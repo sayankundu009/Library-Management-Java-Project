@@ -1,9 +1,11 @@
 # Library-Management-Java-Project
 A library management system 
 
+Setting up the project!!
+
 import javadb.sql in phpmyadmin to use the database
 
-after setting up the project 
+after opening the project inside an IDE
 
 ->right click on Package explorer 
 
