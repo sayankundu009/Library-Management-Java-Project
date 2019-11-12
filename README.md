@@ -3,7 +3,7 @@ A library management system
 
 ## Setting up the project!!
 
-import javadb.sql in phpmyadmin to use the database
+import javadb.sql inside javadb Database in phpmyadmin 
 
 after opening the project inside an IDE
 
