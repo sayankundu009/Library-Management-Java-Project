@@ -56,7 +56,7 @@ class loginform extends JFrame{
 		 setSize(900,600); 
 		 setResizable(false);
 	
-		 setTitle("Login");
+		 setTitle("Library Management System / Login");
 		
 		//Left Side Bar
 		JPanel LeftSideBar = new JPanel(); 
@@ -195,21 +195,31 @@ class loginform extends JFrame{
 				    			    Connection con = DriverManager.getConnection(  
 				    				"jdbc:mysql://localhost:3306/javadb","root","");  
 				    			
-				    				PreparedStatement stmt = con.prepareStatement("select * from test where email = ? and password = ?"); 
+				    				PreparedStatement stmt = con.prepareStatement("select * from user where email = ? and password = ?"); 
 				    				stmt.setString(1,user_name);
 				    				stmt.setString(2,user_pass);
 				    				
 				    				ResultSet rs = stmt.executeQuery();  
 
-				    	 
+				    				
 				    				if(rs.next()) {
-
-				    					//Call AdminPage
-							    		 new Admin(rs.getString("name"),rs.getInt("id")); 
-							    		 dispose();
+				    					//if Admin
+				    					if(rs.getString("role").equals("admin")) {
+				    						
+				    						//Call AdminPage
+								    		 new Admin(rs.getString("name"),rs.getInt("id")); 
+								    		 dispose();
+								    		 
+				    					}else if(rs.getString("role").equals("member")) {
+				    						
+				    						//Call MemberPage
+								    		 new Member(rs.getString("name"),rs.getInt("id")); 
+								    		 dispose();
+				    					}
+				    					
 							    		 
 				    				}else {
-				    					 System.out.println("No records found!");
+	
 						    			 JFrame f = new JFrame(); 
 						    			 JOptionPane.showMessageDialog(f,"Invalid credentials");
 				    				}
@@ -287,7 +297,7 @@ class register extends JFrame{
 	     setSize(900,600); 
 		 setResizable(false);
 		
-		 setTitle("Registration");
+		 setTitle("Library Management System / Registration");
 		
 		
 		//Left Side Bar
@@ -356,7 +366,7 @@ class register extends JFrame{
 			    
 			    
 			    
-			    username = new JTextField("Username ");  
+			    username = new JTextField("Phone ");  
 			    username.setBounds(95,290,300,50); 
 			    
 			    username.setBorder(BorderFactory.createCompoundBorder(
@@ -418,7 +428,7 @@ class register extends JFrame{
 			    
 			    username.addFocusListener(new FocusListener(){  
 			    	
-			    	 String str = "Username ";
+			    	 String str = "Phone ";
 			    	 
 			    	 public void focusGained(FocusEvent e) {
 			    		 if (username.getText().equals(str)) {
@@ -481,7 +491,7 @@ class register extends JFrame{
 			    		if(
 			    				student_name.equals("Name ") 
 			    				|| student_email.equals("Email ")
-			    				|| student_username.equals("Username ")
+			    				|| student_username.equals("Phone ")
 			    				|| student_pass.equals("Password ")
 			    		   ){
 
@@ -497,7 +507,7 @@ class register extends JFrame{
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
 			    			    
 
-			    				PreparedStatement stmt = con.prepareStatement("select * from test where email = ?"); 
+			    				PreparedStatement stmt = con.prepareStatement("select * from user where email = ?"); 
 			    				stmt.setString(1,student_email);
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
@@ -510,7 +520,7 @@ class register extends JFrame{
 			    				}else {
 			    					
 			    					
-				    			    stmt = con.prepareStatement("insert into test(name,email,username,password) values(?,?,?,?)"); 
+				    			    stmt = con.prepareStatement("insert into user(name,email,phone,password,role) values(?,?,?,?,'member')"); 
 				    				stmt.setString(1,student_name);
 				    				stmt.setString(2,student_email);
 				    				stmt.setString(3,student_username);
@@ -521,7 +531,7 @@ class register extends JFrame{
 				    			    
 				    				if(i != 0) {	
 				    					
-				    					stmt = con.prepareStatement("select * from test where email = ?"); 
+				    					stmt = con.prepareStatement("select * from user where email = ?"); 
 					    				stmt.setString(1,student_email);
 					    				
 					    			    rs = stmt.executeQuery();  
@@ -529,10 +539,20 @@ class register extends JFrame{
 					    	 
 					    				if(rs.next()) {	
 					    					
-					    					//Call AdminPage
-								    		 new Admin(rs.getString("name"),rs.getInt("id")); 
-								    		 dispose();
-					    					 con.close();
+					    					//if Admin
+					    					if(rs.getString("role").equals("admin")) {
+					    						//Call AdminPage
+									    		 new Admin(rs.getString("name"),rs.getInt("id")); 
+									    		 dispose();
+						    					 con.close();
+						    					 
+					    					}else if(rs.getString("role").equals("member")) {
+					    						
+					    						//Call MemberPage
+									    		 new Member(rs.getString("name"),rs.getInt("id")); 
+									    		 dispose();
+					    					}
+					    					
 					    				}
 				    					
 							    		 

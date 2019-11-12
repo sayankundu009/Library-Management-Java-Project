@@ -30,10 +30,11 @@ import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
 
 import net.proteanit.sql.DbUtils;
 
+@SuppressWarnings("unused")
 public class Admin extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
-    String user_name,user_email,user_username,user_password;
+    String user_name;
     
 	public Admin (String name ,int id) {
 		
@@ -46,7 +47,7 @@ public class Admin extends JFrame{
 			    Connection con = DriverManager.getConnection(  
 				"jdbc:mysql://localhost:3306/javadb","root","");  
 			
-				PreparedStatement stmt = con.prepareStatement("select * from test where id = ?"); 
+				PreparedStatement stmt = con.prepareStatement("select * from user where id = ?"); 
 				stmt.setInt(1,id);
 			
 				
@@ -58,9 +59,7 @@ public class Admin extends JFrame{
 					//Set User
 					
 		    		 user_name = rs.getString("name");
-		    		 user_email = rs.getString("name");
-		    		 user_username = rs.getString("name");
-		    		 user_password = rs.getString("name");
+		    		
 		    		 
 				}
 		
@@ -71,7 +70,7 @@ public class Admin extends JFrame{
 		 setSize(1200,600); 
 		 setResizable(false);
 	
-		 setTitle("Welcome " + user_name);
+		 setTitle("Library Management System / " + user_name);
 		 
 		 //=========================
 		 //Code Here======================================
@@ -138,7 +137,7 @@ public class Admin extends JFrame{
 				    
 				    
 				  //View Issued Books------
-					JLabel viewissuebookbtn =  new JLabel("<html>&nbsp;&nbsp;&#128221; View Issued Books</html>");  
+					JLabel viewissuebookbtn =  new JLabel("<html>&nbsp;&nbsp;&#128214; View Issued Books</html>");  
 					viewissuebookbtn.setBounds(0,300, 300,50); 
 					viewissuebookbtn.setFont(new Font("Calibri", Font.PLAIN, 22));
 					viewissuebookbtn.setForeground(Color.black);
@@ -147,9 +146,19 @@ public class Admin extends JFrame{
 					viewissuebookbtn.setOpaque(true);
 				    LeftSideBar.add(viewissuebookbtn);
 				    
+				  //Return Issued Books------
+					JLabel returnbookbtn =  new JLabel("<html>&nbsp;&nbsp;&#128209; Return Books</html>");  
+					returnbookbtn.setBounds(0,350, 300,50); 
+					returnbookbtn.setFont(new Font("Calibri", Font.PLAIN, 22));
+					returnbookbtn.setForeground(Color.black);
+					returnbookbtn.setBackground(Color.white);
+					returnbookbtn.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
+					returnbookbtn.setOpaque(true);
+				    LeftSideBar.add(returnbookbtn);
+				    
 				  //logout------
 					JLabel logout =  new JLabel("<html>&nbsp;&nbsp;&#128280; Log out</html>");  
-					logout.setBounds(0,350, 300,50); 
+					logout.setBounds(0,400, 300,50); 
 					logout.setFont(new Font("Calibri", Font.PLAIN, 22));
 					logout.setForeground(Color.black);
 					logout.setBackground(new Color(220,220,220));
@@ -179,9 +188,25 @@ public class Admin extends JFrame{
 					dashboardPanel.setLayout(null);
 					dashboardPanel.setVisible(true);
 					
+					JLabel dashboardText =  new JLabel("<html>Dashboard</html>");  
+					dashboardText.setBounds(20,20, 700,50); 
+					dashboardText.setFont(new Font("Calibri", Font.PLAIN, 40));
+					dashboardText.setForeground(new Color(74, 85, 104));
+					dashboardPanel.add(dashboardText);
+					
+					dashboardPanel.add(dashboardText);
+					
+					JLabel dashboardLine =  new JLabel("<html>__________________________________________________________________________________________________________________________________</html>");  
+					dashboardLine.setBounds(20,50, 700,50); 
+					dashboardLine.setFont(new Font("Calibri", Font.PLAIN, 40));
+					dashboardLine.setForeground(new Color(226, 232, 240));
+					dashboardPanel.add(dashboardLine);
+					
+					dashboardPanel.add(dashboardText);
+					
 					 // User Card
 						JPanel usercard = new JPanel();
-						usercard.setBounds(20,20,200,200);    
+						usercard.setBounds(20,140,200,200);    
 						usercard.setBackground(new Color(104, 211, 145));
 						usercard.setLayout(null);
 						usercard.setVisible(true);
@@ -208,14 +233,13 @@ public class Admin extends JFrame{
 			    			    Connection con = DriverManager.getConnection(  
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
 			    			
-			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from test"); 
+			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from user where role = 'member' "); 
 			    	
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
 			    				rs.next();
 			    				String numberofUsers = rs.getString(1);
-			    				
-			    				System.out.print(numberofUsers);
+			    	
 			    				
 			    				numberUser.setText(numberofUsers);
 			    				
@@ -231,7 +255,7 @@ public class Admin extends JFrame{
 						//Books Card-----
 						
 						JPanel bookscard = new JPanel();
-						bookscard.setBounds(250,20,200,200);    
+						bookscard.setBounds(250,140,200,200);    
 						bookscard.setBackground(new Color(183, 148, 244));
 						bookscard.setLayout(null);
 						bookscard.setVisible(true);
@@ -258,14 +282,14 @@ public class Admin extends JFrame{
 			    			    Connection con = DriverManager.getConnection(  
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
 			    			
-			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from books"); 
+			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from books where qty <> 0"); 
 			    	
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
 			    				rs.next();
 			    				String numberofBook = rs.getString(1);
 			    				
-			    				System.out.print(numberofBook);
+			    				
 			    				
 			    				numberBook.setText(numberofBook);
 			    				
@@ -276,6 +300,56 @@ public class Admin extends JFrame{
 			    			bookscard.add(numberBook);
 								
 						dashboardPanel.add(bookscard);
+						
+						
+						//issued Card-----
+						
+						JPanel issuedcard = new JPanel();
+						issuedcard.setBounds(480,140,200,200);    
+						issuedcard.setBackground(new Color(246, 173, 85));
+						issuedcard.setLayout(null);
+						issuedcard.setVisible(true);
+						
+						
+						  //No. of Users
+							JLabel numberIssued =  new JLabel("",SwingConstants.CENTER);  
+							numberIssued.setBounds(0,50, 200,100); 
+							numberIssued.setFont(new Font("Calibri", Font.PLAIN, 100));
+							numberIssued.setForeground(Color.white);
+							numberIssued.setOpaque(false);
+						    
+						    JLabel numberIssuedsub =  new JLabel("Books Issued",SwingConstants.CENTER);  
+						    numberIssuedsub.setBounds(0,140, 200,50); 
+						    numberIssuedsub.setFont(new Font("Calibri", Font.PLAIN, 19));
+						    numberIssuedsub.setForeground(Color.white);
+						    numberIssuedsub.setOpaque(false);
+						    issuedcard.add(numberIssuedsub);
+						
+							//DB Work - Number of Books
+			    			try{  
+			    				Class.forName("com.mysql.jdbc.Driver");  
+			    				
+			    			    Connection con = DriverManager.getConnection(  
+			    				"jdbc:mysql://localhost:3306/javadb","root","");  
+			    			
+			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from issued_book"); 
+			    	
+			    				
+			    				ResultSet rs = stmt.executeQuery();  
+			    				rs.next();
+			    				String numberofissued = rs.getString(1);
+			    				
+			    			
+			    				
+			    				numberIssued.setText(numberofissued);
+			    				
+			    				con.close();
+				    		
+			    			}catch(Exception e1){ System.out.println(e1);} 
+			    			
+			    			issuedcard.add(numberIssued);
+								
+						dashboardPanel.add(issuedcard);
 						
 						
 						
@@ -394,10 +468,7 @@ public class Admin extends JFrame{
 								        		JFrame f = new JFrame(); 
 								    			JOptionPane.showMessageDialog(f,"please fill in all the fields");
 								        	}else {
-								        		System.out.print(Name);
-								        		System.out.print(Author);
-								        		System.out.print(Price);
-								        		System.out.print(Qty);
+								        		
 								        		
 								        		//DB Work - check for valid user
 								    			try{  
@@ -491,6 +562,7 @@ public class Admin extends JFrame{
 								BooknameLableForm.setFont(new Font("Calibri", Font.PLAIN, 22));
 								issueBookPanel.add(BooknameLableForm);
 								
+								
 								JTextField BooknameField = new JTextField("");  
 								BooknameField.setBounds(20,200,300,50); 
 								BooknameField.setBorder(BorderFactory.createCompoundBorder(
@@ -543,18 +615,21 @@ public class Admin extends JFrame{
 								    					if(bookQty > 0) {
 
 								    						BooknameField.setText(rs.getString("name"));
+								    						
 										    				con.close();
 								    						
 								    					}else {
 								    						JFrame f = new JFrame(); 
 											    			JOptionPane.showMessageDialog(f,"Book Out Of Stock");
 											    			BooknameField.setText("");
+											    			
 											    			con.close();
 								    					}
 								    				}else {
 								    					JFrame f = new JFrame(); 
 										    			JOptionPane.showMessageDialog(f,"Please enter a valid book ID");
 										    			BooknameField.setText("");
+										    		
 										    			con.close();
 								    				}
 								    				
@@ -626,7 +701,7 @@ public class Admin extends JFrame{
 								    			    
 								    			    String StudentID = StudentIdField.getText();
 								    			    
-								    			    PreparedStatement stmt = con.prepareStatement("select * from test where id = ?"); 
+								    			    PreparedStatement stmt = con.prepareStatement("select * from user where id = ?"); 
 								    				stmt.setString(1,StudentID);
 								    				
 								    				ResultSet rs = stmt.executeQuery();  
@@ -722,10 +797,7 @@ public class Admin extends JFrame{
 								        		JFrame f = new JFrame(); 
 								    			JOptionPane.showMessageDialog(f,"please fill in all the fields");
 								        	}else {
-								        		System.out.print(bookID);
-								        		System.out.print(stuID);
-								        		System.out.print(issueDate);
-								        		System.out.print(returnDate);
+								        		
 								        		
 								        		//DB Work - check for valid user
 								    			try{  
@@ -752,6 +824,11 @@ public class Admin extends JFrame{
 										    			StudentnameField.setText("");
 											        	StudentIdField.setText("");
 											        	ReturnDateField.setText("");
+											        	
+											        	
+											        	stmt = con.prepareStatement("UPDATE books SET qty = qty - 1 WHERE id = ?"); 
+									    				stmt.setString(1,bookID);
+									    			    stmt.executeUpdate();
 								    		
 								    				}else {
 								    					
@@ -784,7 +861,300 @@ public class Admin extends JFrame{
 						viewissueBookPanel.setLayout(null);
 						viewissueBookPanel.setVisible(false);
 						RightSideBar.add(viewissueBookPanel);
+						
+						
+						
+						//Issue book Panel
+						
+						JPanel returnBookPanel = new JPanel(); 
+						returnBookPanel.setBounds(0,0,900,600);    
+						returnBookPanel.setBackground(new Color(247,247,247));
+						returnBookPanel.setLayout(null);
+						returnBookPanel.setVisible(false);
+						
+						//===========================
+						
+						//Issue Book Form
+						
+					
+								JLabel returnIssueIdLableForm =  new JLabel("Enter the Issued ID of the book");  
+								returnIssueIdLableForm.setBounds(20,50, 400,50); 
+								returnIssueIdLableForm.setFont(new Font("Calibri", Font.PLAIN, 22));
+								returnBookPanel.add(returnIssueIdLableForm);
+							
+								
+								JTextField returnIssueIdField = new JTextField("");  
+								returnIssueIdField.setBounds(20,100,300,50); 
+								returnIssueIdField.setBorder(BorderFactory.createCompoundBorder(
+										returnIssueIdField.getBorder(), 
+							    BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+								returnBookPanel.add(returnIssueIdField); 
+								
+								
+								//Book search button
+								JLabel issueBookSearch =  new JLabel("<html>&#x1F50D;</html>",SwingConstants.CENTER);  
+								issueBookSearch.setBounds(315,100, 80,49); 
+								issueBookSearch.setFont(new Font("Calibri", Font.PLAIN, 22));
+								issueBookSearch.setOpaque(true);
+								issueBookSearch.setCursor(new Cursor(Cursor.HAND_CURSOR));
+								issueBookSearch.setForeground(Color.white);
+								issueBookSearch.setBackground(new Color(99, 179, 237));
+								returnBookPanel.add(issueBookSearch);
+								
+								//Info Lables
+								
+								JLabel returnBookID = new JLabel(""); 
+								returnBookID.setVisible(false);
+								
+								JLabel returnIssueID = new JLabel(""); 
+								returnBookID.setVisible(false);
+								
+								JLabel returnBookNameLableForm =  new JLabel("Book name");  
+								returnBookNameLableForm.setBounds(20,160, 150,50); 
+								returnBookNameLableForm.setFont(new Font("Calibri", Font.PLAIN, 18));
+								returnBookPanel.add(returnBookNameLableForm);
+								
+								JLabel returnBookNameField =  new JLabel("  ---");  
+								returnBookNameField.setBounds(20,200, 300,50); 
+								returnBookNameField.setFont(new Font("Calibri", Font.PLAIN, 25));
+								returnBookNameField.setOpaque(true);
+								returnBookNameField.setBackground(new Color(226, 232, 240));
+								returnBookPanel.add(returnBookNameField);
+								
+								JLabel returnStudentNameLableForm =  new JLabel("Student name");  
+								returnStudentNameLableForm.setBounds(350,160, 200,50); 
+								returnStudentNameLableForm.setFont(new Font("Calibri", Font.PLAIN, 18));
+								returnBookPanel.add(returnStudentNameLableForm);
+								
+								JLabel returnStudentNameField =  new JLabel("  ---");  
+								returnStudentNameField.setBounds(350,200, 400,50); 
+								returnStudentNameField.setFont(new Font("Calibri", Font.PLAIN, 25));
+								returnStudentNameField.setOpaque(true);
+								returnStudentNameField.setBackground(new Color(226, 232, 240));
+								returnBookPanel.add(returnStudentNameField);
+								
+								JLabel returnIssueDateLableForm =  new JLabel("Issue Date");  
+								returnIssueDateLableForm.setBounds(20,260, 150,50); 
+								returnIssueDateLableForm.setFont(new Font("Calibri", Font.PLAIN, 18));
+								returnBookPanel.add(returnIssueDateLableForm);
+								
+								JLabel returnIssueDateField =  new JLabel("  ---");  
+								returnIssueDateField.setBounds(20,300, 160,50); 
+								returnIssueDateField.setFont(new Font("Calibri", Font.PLAIN, 25));
+								returnIssueDateField.setOpaque(true);
+								returnIssueDateField.setBackground(new Color(226, 232, 240));
+								returnBookPanel.add(returnIssueDateField);
+								
+								JLabel returnReturnDateLableForm =  new JLabel("Return Date");  
+								returnReturnDateLableForm.setBounds(200,260, 150,50); 
+								returnReturnDateLableForm.setFont(new Font("Calibri", Font.PLAIN, 18));
+								returnBookPanel.add(returnReturnDateLableForm);
+								
+								JLabel returnReturnDateField =  new JLabel("  ---");  
+								returnReturnDateField.setBounds(200,300, 160,50); 
+								returnReturnDateField.setFont(new Font("Calibri", Font.PLAIN, 25));
+								returnReturnDateField.setOpaque(true);
+								returnReturnDateField.setBackground(new Color(226, 232, 240));
+								returnBookPanel.add(returnReturnDateField); 
+								
+								JLabel returnDaysLableForm =  new JLabel("Days Elapsed");  
+								returnDaysLableForm.setBounds(380,260, 100,50); 
+								returnDaysLableForm.setFont(new Font("Calibri", Font.PLAIN, 18));
+								returnBookPanel.add(returnDaysLableForm);
+								
+								JLabel returnDaysField =  new JLabel("  ---");  
+								returnDaysField.setBounds(380,300, 150,50); 
+								returnDaysField.setFont(new Font("Calibri", Font.PLAIN, 25));
+								returnDaysField.setOpaque(true);
+								returnDaysField.setBackground(new Color(226, 232, 240));
+								returnBookPanel.add(returnDaysField);
+								
+								JLabel returnFineLableForm =  new JLabel("Fine");  
+								returnFineLableForm.setBounds(20,360, 100,50); 
+								returnFineLableForm.setFont(new Font("Calibri", Font.PLAIN, 18));
+								returnBookPanel.add(returnFineLableForm);
+								
+								JLabel returnFineField =  new JLabel("  ---");  
+								returnFineField.setBounds(20,400, 150,50); 
+								returnFineField.setFont(new Font("Calibri", Font.PLAIN, 25));
+								returnFineField.setOpaque(true);
+								returnFineField.setBackground(new Color(226, 232, 240));
+								returnBookPanel.add(returnFineField);
+								
+
+								JButton returnBookBtnForm = new JButton("Return"); 
+								returnBookBtnForm.setBounds(20,480, 200,50); 
+								returnBookBtnForm.setFont(new Font("Calibri", Font.PLAIN, 22));
+								returnBookBtnForm.setBorderPainted(false);
+								returnBookBtnForm.setFocusPainted(false);
+								returnBookBtnForm.setContentAreaFilled(true);
+								returnBookBtnForm.setForeground(Color.white);
+								returnBookBtnForm.setBackground(new Color(99, 179, 237));
+								returnBookBtnForm.setCursor(new Cursor(Cursor.HAND_CURSOR));
+								returnBookPanel.add(returnBookBtnForm);
+								
+								returnBookBtnForm.addActionListener(new ActionListener(){  
+								    	public void actionPerformed(ActionEvent e){  
+								    		
+								    		//Do All DB Work And Stuff
+								        	
+								        	String bookid = returnBookID.getText();
+								        	String issueid = returnIssueID.getText();
+								        	
+					    					   
+								        	
+								        	if(
+								        			bookid.equals("") 
+								        			|| issueid.equals("") 
+								        		
+								        	   
+								        	) {
+								        		JFrame f = new JFrame(); 
+								    			JOptionPane.showMessageDialog(f,"please provide a Issued ID");
+								        	}else {
+								        	
+								        		
+								        		//DB Work - check for valid user
+								    			try{  
+								    				Class.forName("com.mysql.jdbc.Driver");  
+								    				
+								    			    Connection con = DriverManager.getConnection(  
+								    				"jdbc:mysql://localhost:3306/javadb","root","");  
+								    			
+								    			    PreparedStatement stmt = con.prepareStatement("DELETE FROM issued_book WHERE id = ?;"); 
+								    				stmt.setString(1,issueid);
+								    				
+								    				
+								    
+								    			    int i = stmt.executeUpdate();
+								    			    
+								    				if(i != 0) {	
+								    					
+								    					JFrame f = new JFrame(); 
+										    			JOptionPane.showMessageDialog(f,"Book Returned Successfully");
+										    			
+										    			stmt = con.prepareStatement("UPDATE books SET qty = qty + 1 WHERE id = ?"); 
+									    				stmt.setString(1,bookid);
+									    			    stmt.executeUpdate();
+									    			    
+										    			   returnIssueIdField.setText("");
+										    			
+										    			   returnBookID.setText("");
+								    					   returnIssueID.setText("");
+								    					   
+								    					   returnFineField.setText("  ---"); 
+								    					   returnDaysField.setText("  ---"); 
+								    					   returnBookNameField.setText("  ---");
+								    					   returnStudentNameField.setText("  ---");
+								    					   returnReturnDateField.setText("  ---");
+								    					   returnIssueDateField.setText("  ---");
+								    		
+								    				}else {
+								    					
+								    					JFrame f = new JFrame(); 
+										    			JOptionPane.showMessageDialog(f,"Unable to return,Please try again");
+								    					
+								    				}
+							
+									    			 
+									    		
+								    			}catch(Exception e1){ System.out.println(e1);} 
+								        		
+								        		
+								        	}
+								    	
+								    	}  
+								});
+								
+								//----------------
+								
+								//Click Action---
+								issueBookSearch.addMouseListener(new MouseAdapter()  
+								{  
+								        public void mouseClicked(MouseEvent e)  
+								        { 
+								        	
+								        	if(returnIssueIdField.getText() == "") {
+								        		 JFrame f = new JFrame(); 
+								    			 JOptionPane.showMessageDialog(f,"Please enter the issued ID");	
+								        	}else{
+								        		
+								        		//DB Work - Book Search
+								    			try{  
+								    				Class.forName("com.mysql.jdbc.Driver");  
+								    				
+								    			    Connection con = DriverManager.getConnection(  
+								    				"jdbc:mysql://localhost:3306/javadb","root","");  
+								    			
+								    			    
+								    			    String IssueID = returnIssueIdField.getText();
+								    			    
+								    			    PreparedStatement stmt = con.prepareStatement("SELECT issued_book.id as ID,BID as BookID,books.name as BookName,STUID as StudentID,user.name as StudentName,issue_Date,return_Date, GREATEST(DateDiff( now(), return_Date),0) as days_elapsed, GREATEST(DateDiff( now(), return_Date) * 10,0) as fine FROM `issued_book`,`books`,`user` WHERE BID = books.id and STUID = user.id and issued_book.id = ?;"); 
+								    				stmt.setString(1,IssueID);
+								    				
+								    				ResultSet rs = stmt.executeQuery();  
+								    				
+								    				
+								    				if(rs.next()) {
+								    				
+								    					
+								    					   String bookname = rs.getString("BookName");
+								    					   String studentname = rs.getString("StudentName");
+								    					   String issuedate = rs.getString("issue_Date");
+								    					   String returndate = rs.getString("return_Date");
+								    					   String fine = rs.getString("fine");
+								    					   String dayselapsed = rs.getString("days_elapsed");
+								    					   
+								    					   returnBookID.setText(rs.getString("BookID"));
+								    					   returnIssueID.setText(rs.getString("id"));
+								    					   
+								    					   returnFineField.setText("  ₹"+fine); 
+								    					   returnDaysField.setText("  "+dayselapsed); 
+								    					   returnBookNameField.setText("  "+bookname);
+								    					   returnStudentNameField.setText("  "+studentname);
+								    					   returnReturnDateField.setText("  "+returndate);
+								    					   returnIssueDateField.setText("  "+issuedate);
+								    					   
+								    					   con.close();
+								    					
+								    				}else {
+								    					JFrame f = new JFrame(); 
+										    			JOptionPane.showMessageDialog(f,"Please enter a valid Issued ID");
+										    			returnIssueIdField.setText("");
+										    			
+										    			   returnBookID.setText("");
+								    					   returnIssueID.setText("");
+								    					   
+								    					   returnFineField.setText("  ---"); 
+								    					   returnDaysField.setText("  ---"); 
+								    					   returnBookNameField.setText("  ---");
+								    					   returnStudentNameField.setText("  ---");
+								    					   returnReturnDateField.setText("  ---");
+								    					   returnIssueDateField.setText("  ---");
+								    					   
+										    			con.close();
+								    				}
+								    				
+									    		
+								    			}catch(Exception e1){ System.out.println(e1);} 
+								        		
+								        	}
+								        	
+								        	
+							    			
+								        }
+								  });
+									
+								//===============
+								
+								
+								
+								
+								
+							//===============
+							RightSideBar.add(returnBookPanel);
 				
+							
 				add(RightSideBar);
 		 //=========================
 	     //Code Here======================================
@@ -803,8 +1173,14 @@ public class Admin extends JFrame{
 			    				
 			    			    Connection con = DriverManager.getConnection(  
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
-			    			
-			    				PreparedStatement stmt = con.prepareStatement("select * from test"); 
+
+
+
+
+
+
+
+			    				PreparedStatement stmt = con.prepareStatement("select id as ID,name as Name,email as Email,phone as Phone from user where role = 'member' "); 
 			    			
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
@@ -813,10 +1189,15 @@ public class Admin extends JFrame{
 			    				 JTable jt = new JTable();    
 			    				 jt.setModel(DbUtils.resultSetToTableModel(rs));
 				    			
-				    			 jt.setFont(new Font("Calibri", Font.PLAIN, 18));
+			    				 jt.setFont(new Font("Calibri", Font.PLAIN, 18));
+				    			 jt.getTableHeader().setBackground(new Color(86, 97, 119));
+				    			 jt.getTableHeader().setForeground(Color.white);
+				    			 jt.getTableHeader().setFont(new Font("Calibri", Font.BOLD, 18));
+				    			 jt.setRowHeight(50);
+				    			 jt.setRowMargin(30);
 				    			 
-				    			 JLabel lable = new JLabel("All Users");
-				    			 lable.setBounds(10,0,100,100);
+				    			 JLabel lable = new JLabel("All Members");
+				    			 lable.setBounds(10,0,300,100);
 				    			 lable.setFont(new Font("Calibri", Font.PLAIN, 25));
 				    			 
 				    			 JScrollPane scrollPane = new  JScrollPane(jt);
@@ -835,6 +1216,7 @@ public class Admin extends JFrame{
 					        	 viewBooksPanel.setVisible(false);
 					        	 issueBookPanel.setVisible(false);
 					        	 viewissueBookPanel.setVisible(false);
+					        	 returnBookPanel.setVisible(false);
 					        	 
 					        	 //set link active style
 					        	 dashboardbtn.setForeground(Color.black);
@@ -854,6 +1236,9 @@ public class Admin extends JFrame{
 					        	 
 					        	 viewissuebookbtn.setForeground(Color.black);
 					        	 viewissuebookbtn.setBackground(Color.white);
+					        	 
+					        	 returnbookbtn.setForeground(Color.black);
+					        	 returnbookbtn.setBackground(Color.white);
 					        	
 					        	
 			    				
@@ -880,6 +1265,7 @@ public class Admin extends JFrame{
 				        	 viewBooksPanel.setVisible(false);
 				        	 issueBookPanel.setVisible(false);
 				        	 viewissueBookPanel.setVisible(false);
+				        	 returnBookPanel.setVisible(false);
 				        	 
 				        	 //set link active style
 				        	 addBook.setForeground(Color.white);
@@ -899,6 +1285,9 @@ public class Admin extends JFrame{
 				        	 
 				        	 viewissuebookbtn.setForeground(Color.black);
 				        	 viewissuebookbtn.setBackground(Color.white);
+				        	 
+				        	 returnbookbtn.setForeground(Color.black);
+				        	 returnbookbtn.setBackground(Color.white);
 				        	
 				        }  
 				});
@@ -916,7 +1305,7 @@ public class Admin extends JFrame{
 			    			    Connection con = DriverManager.getConnection(  
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
 			    			
-			    				PreparedStatement stmt = con.prepareStatement("select * from books"); 
+			    				PreparedStatement stmt = con.prepareStatement("select id as ID,name as Name,author as Author,price as Price,qty as Quantity from books"); 
 			    			
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
@@ -925,7 +1314,12 @@ public class Admin extends JFrame{
 			    				 JTable jt = new JTable();    
 			    				 jt.setModel(DbUtils.resultSetToTableModel(rs));
 				    			
-				    			 jt.setFont(new Font("Calibri", Font.PLAIN, 18));
+			    				 jt.setFont(new Font("Calibri", Font.PLAIN, 18));
+				    			 jt.getTableHeader().setBackground(new Color(86, 97, 119));
+				    			 jt.getTableHeader().setForeground(Color.white);
+				    			 jt.getTableHeader().setFont(new Font("Calibri", Font.BOLD, 18));
+				    			 jt.setRowHeight(50);
+				    			 jt.setRowMargin(30);
 				    			 
 				    			 JLabel lable = new JLabel("All Books");
 				    			 lable.setBounds(10,0,100,100);
@@ -947,6 +1341,7 @@ public class Admin extends JFrame{
 					        	 viewBooksPanel.setVisible(true);
 					        	 issueBookPanel.setVisible(false);
 					        	 viewissueBookPanel.setVisible(false);
+					        	 returnBookPanel.setVisible(false);
 					        	 
 					        	 //set link active style
 					        	 dashboardbtn.setForeground(Color.black);
@@ -963,6 +1358,9 @@ public class Admin extends JFrame{
 					        	 
 					        	 viewissuebookbtn.setForeground(Color.black);
 					        	 viewissuebookbtn.setBackground(Color.white);
+					        	 
+					        	 returnbookbtn.setForeground(Color.black);
+					        	 returnbookbtn.setBackground(Color.white);
 					        	 
 					        	 //--active
 					        	 viewBook.setForeground(Color.white);
@@ -994,14 +1392,14 @@ public class Admin extends JFrame{
 			    			    Connection con = DriverManager.getConnection(  
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
 			    			
-			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from test"); 
+			    			    PreparedStatement stmt = con.prepareStatement("select count(*) as count from user"); 
 			    	
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
 			    				rs.next();
 			    				String numberofUsers = rs.getString(1);
 			    				
-			    				System.out.print(numberofUsers);
+			    				
 			    				
 			    				numberUser.setText(numberofUsers);
 			    				
@@ -1023,7 +1421,7 @@ public class Admin extends JFrame{
 			    				rs.next();
 			    				String numberofBook = rs.getString(1);
 			    				
-			    				System.out.print(numberofBook);
+			    				
 			    				
 			    				numberBook.setText(numberofBook);
 			    				
@@ -1039,6 +1437,7 @@ public class Admin extends JFrame{
 				        	 viewBooksPanel.setVisible(false);
 				        	 issueBookPanel.setVisible(false);
 				        	 viewissueBookPanel.setVisible(false);
+				        	 returnBookPanel.setVisible(false);
 				        	 
 				        	 //set link active style
 				        	 dashboardbtn.setForeground(Color.white);
@@ -1059,6 +1458,9 @@ public class Admin extends JFrame{
 				        	 viewissuebookbtn.setForeground(Color.black);
 				        	 viewissuebookbtn.setBackground(Color.white);
 				        	 
+				        	 returnbookbtn.setForeground(Color.black);
+				        	 returnbookbtn.setBackground(Color.white);
+				        	 
 				        	 
 				        }  
 				});
@@ -1074,7 +1476,8 @@ public class Admin extends JFrame{
 				        	 addbookPanel.setVisible(false);
 				        	 viewBooksPanel.setVisible(false);
 				        	 issueBookPanel.setVisible(true);
-				        	 viewissueBookPanel.setVisible(false);
+				        	 viewissueBookPanel.setVisible(false);				        	 
+				        	 returnBookPanel.setVisible(false);
 				        	 
 				        	 //set link active style
 				        	 dashboardbtn.setForeground(Color.black);
@@ -1094,6 +1497,9 @@ public class Admin extends JFrame{
 				        	 
 				        	 viewissuebookbtn.setForeground(Color.black);
 				        	 viewissuebookbtn.setBackground(Color.white);
+				        	 
+				        	 returnbookbtn.setForeground(Color.black);
+				        	 returnbookbtn.setBackground(Color.white);
 				        }  
 				});
 				
@@ -1110,7 +1516,7 @@ public class Admin extends JFrame{
 			    			    Connection con = DriverManager.getConnection(  
 			    				"jdbc:mysql://localhost:3306/javadb","root","");  
 			    			
-			    				PreparedStatement stmt = con.prepareStatement("SELECT issued_book.id as ID,BID as BookID,books.name as BookName,STUID as StudentID,test.name as StudentName,issue_Date,return_Date, GREATEST(DateDiff( now(), return_Date),0) as days_elapsed, GREATEST(DateDiff( now(), return_Date) * 10,0) as fine FROM `issued_book`,`books`,`test` WHERE BID = books.id and STUID = test.id;"); 
+			    				PreparedStatement stmt = con.prepareStatement("SELECT issued_book.id as ID,BID as BookID,books.name as BookName,STUID as StudentID,user.name as StudentName,issue_Date,return_Date, GREATEST(DateDiff( now(), return_Date),0) as Days_Elapsed, GREATEST(DateDiff( now(), return_Date) * 10,0) as Fine FROM `issued_book`,`books`,`user` WHERE BID = books.id and STUID = user.id;"); 
 			    			
 			    				
 			    				ResultSet rs = stmt.executeQuery();  
@@ -1119,7 +1525,12 @@ public class Admin extends JFrame{
 			    				 JTable jt = new JTable();    
 			    				 jt.setModel(DbUtils.resultSetToTableModel(rs));
 				    			
-				    			 jt.setFont(new Font("Calibri", Font.PLAIN, 18));
+			    				 jt.setFont(new Font("Calibri", Font.PLAIN, 18));
+				    			 jt.getTableHeader().setBackground(new Color(86, 97, 119));
+				    			 jt.getTableHeader().setForeground(Color.white);
+				    			 jt.getTableHeader().setFont(new Font("Calibri", Font.BOLD, 18));
+				    			 jt.setRowHeight(50);
+				    			 jt.setRowMargin(30);
 				    			 
 				    			 JLabel lable = new JLabel("Issued Books");
 				    			 lable.setBounds(10,0,300,100);
@@ -1140,7 +1551,8 @@ public class Admin extends JFrame{
 					        	 addbookPanel.setVisible(false);
 					        	 viewBooksPanel.setVisible(false);
 					        	 issueBookPanel.setVisible(false);
-					        	 viewissueBookPanel.setVisible(true);
+					        	 viewissueBookPanel.setVisible(true);					        	 
+					        	 returnBookPanel.setVisible(false);
 					        	 
 					        	 //set link active style
 					        	 dashboardbtn.setForeground(Color.black);
@@ -1158,6 +1570,9 @@ public class Admin extends JFrame{
 					        	 viewBook.setForeground(Color.black);
 					        	 viewBook.setBackground(Color.white);
 					        	 
+					        	 returnbookbtn.setForeground(Color.black);
+					        	 returnbookbtn.setBackground(Color.white);
+					        	 
 					        	 //--active
 					        	 viewissuebookbtn.setForeground(Color.white);
 					        	 viewissuebookbtn.setBackground(new Color(99, 179, 237));
@@ -1171,6 +1586,58 @@ public class Admin extends JFrame{
 
 				        }  
 				}); 
+				
+				returnbookbtn.addMouseListener(new MouseAdapter()  
+				{  
+				        public void mouseClicked(MouseEvent e)  
+				        { 
+				        	//Set All Panels
+				        	 dashboardPanel.setVisible(false);
+				        	 viewUserPanel.setVisible(false);
+				        	 addbookPanel.setVisible(false);
+				        	 viewBooksPanel.setVisible(false);
+				        	 issueBookPanel.setVisible(false);
+				        	 viewissueBookPanel.setVisible(false);
+				        	 returnBookPanel.setVisible(true);
+				        	
+				        	 
+				        	 //set link active style
+				        	 dashboardbtn.setForeground(Color.black);
+				        	 dashboardbtn.setBackground(Color.white);
+				        	 
+				        	 addBook.setForeground(Color.black);
+				        	 addBook.setBackground(Color.white);
+				        	 
+				        	 viewUserbtn.setForeground(Color.black);
+				        	 viewUserbtn.setBackground(Color.white);
+				        	 
+				        	 viewBook.setForeground(Color.black);
+				        	 viewBook.setBackground(Color.white);
+				        	 
+				        	 issuebookbtn.setForeground(Color.black);
+				        	 issuebookbtn.setBackground(Color.white);
+				        	 
+				        	 viewissuebookbtn.setForeground(Color.black);
+				        	 viewissuebookbtn.setBackground(Color.white);
+				        	 
+				        	 returnbookbtn.setForeground(Color.white);
+				        	 returnbookbtn.setBackground(new Color(99, 179, 237));
+				        	 
+				        	 //Set all Text
+				        	 
+				        	   returnIssueIdField.setText("");
+				    			
+			    			   returnBookID.setText("");
+	    					   returnIssueID.setText("");
+	    					   
+	    					   returnFineField.setText("  ---"); 
+	    					   returnDaysField.setText("  ---"); 
+	    					   returnBookNameField.setText("  ---");
+	    					   returnStudentNameField.setText("  ---");
+	    					   returnReturnDateField.setText("  ---");
+	    					   returnIssueDateField.setText("  ---");
+				        }  
+				});
 				
 				
 				logout.addMouseListener(new MouseAdapter()  
