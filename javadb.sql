@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2019 at 06:47 PM
+-- Generation Time: Nov 12, 2019 at 07:39 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.7
 
@@ -42,13 +42,11 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`id`, `name`, `author`, `price`, `qty`) VALUES
 (1, 'harry Potter', 'Sayan', '250', '4'),
-(2, 'Sherlock', 'Sir Arthur', '500', '54'),
-(3, 'sayan', 'sayan', '500', '1'),
+(2, 'Sherlock', 'Sir Arthur', '500', '5'),
+(3, 'C#', 'sayan', '500', '1'),
 (4, 'Java', 'asd', '150', '5'),
 (5, 'c++', 'asd', '450', '1'),
-(6, 'c', 'asd', 'asd', '5'),
-(7, 'asd', 'asd', 'asd', 'asd'),
-(8, 's', 's', 's', 's');
+(6, 'c', 'asd', 'asd', '5');
 
 -- --------------------------------------------------------
 
@@ -61,42 +59,42 @@ CREATE TABLE `issued_book` (
   `BID` bigint(20) NOT NULL,
   `STUID` bigint(20) NOT NULL,
   `issue_Date` varchar(255) NOT NULL,
-  `return_Date` varchar(255) NOT NULL,
-  `days_elapsed` varchar(255) DEFAULT NULL,
-  `fine` varchar(255) DEFAULT NULL
+  `return_Date` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `issued_book`
 --
 
-INSERT INTO `issued_book` (`id`, `BID`, `STUID`, `issue_Date`, `return_Date`, `days_elapsed`, `fine`) VALUES
-(1, 1, 2, '2019-11-5', '2019-11-3', NULL, NULL),
-(2, 1, 2, '2019-11-05', '2019-11-06', NULL, NULL);
+INSERT INTO `issued_book` (`id`, `BID`, `STUID`, `issue_Date`, `return_Date`) VALUES
+(3, 5, 1, '2019-11-09', '2019-11-010'),
+(4, 2, 1, '2019-11-09', '2019-11-09'),
+(5, 3, 1, '2019-11-09', '2019-11-09');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `test`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `test` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `phone` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `test`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `test` (`id`, `name`, `email`, `username`, `password`) VALUES
-(1, 'Sayan', 'sayan@gmail.com', 'sayank', '123'),
-(2, 'Rahul', 'rahul@gmail.com', 'rahulk', '123'),
-(4, 's', 's', 's', 's'),
-(6, 'Sayan Kundu', 'sayanjoy@gmail.com', 'asdasd', '123');
+INSERT INTO `user` (`id`, `name`, `email`, `phone`, `password`, `role`) VALUES
+(1, 'Sayan', 'a', '8245625445', 'a', 'member'),
+(2, 'Rahul', 'rahul@gmail.com', '2456524558', '123', 'member'),
+(4, 's', 's', '4854652445', 's', 'admin'),
+(6, 'Sayan Kundu', 'sayanjoy@gmail.com', '8546545254', '123', 'member');
 
 --
 -- Indexes for dumped tables
@@ -115,9 +113,9 @@ ALTER TABLE `issued_book`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `test`
+-- Indexes for table `user`
 --
-ALTER TABLE `test`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -134,13 +132,13 @@ ALTER TABLE `books`
 -- AUTO_INCREMENT for table `issued_book`
 --
 ALTER TABLE `issued_book`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `test`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
