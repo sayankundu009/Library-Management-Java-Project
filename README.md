@@ -3,9 +3,9 @@ A library management system
 
 ## Setting up the project!!
 
-import javadb.sql into Database 
+Import javadb.sql into Database 
 
-after opening the project inside an IDE
+After opening the project inside an IDE
 
 - Right click on Package explorer 
 
